@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>上传照片</title>
+        <meta charset="utf-8"/>
+        <script type='text/javascript' src='js/exif.js'></script>
+        <script type='text/javascript' src='js/index.js'></script>
+        <script>
+            var handleFiles = function(files){
+                console.log('ie aa');
+                var imgfile = files[0]; 
+                var img = document.createElement("img");
+                img.classList.add("obj");
+                img.file = imgfile;
+                document.getElementById('container').appendChild(img); // Assuming that "preview" is the div output where the content will be displayed.
+                
+                var reader = new FileReader();
+                reader.onload = (function(aImg) { return function(e) { 
+                    aImg.src = e.target.result; 
+                    aImg.onload = function(){
+                        console.log(aImg.width);
+                        console.log(aImg.height);
+            
+                    };
+                    
+                    //document.getElementById('container').style = 'display:none';
+                }; })(img);
+                reader.readAsDataURL(imgfile);
+                
+            };
+        </script>
+        <style>
+            #container {
+                position: absolute; 
+                left:-99999px
+            }
+        </style>
+    </head>
+    <body>
+        <div id='container'>test</div>
+        <img id='img1' style="width:200px; height:200px;" src="/" alt="">
+        <form>
+            <input id='imgfile' type="file" label='选择图片：' onchange="handleFiles(this.files)"/>
+            <button id='submit'>提交</button>
+        </form>
+    </body>
+</html>
